@@ -52,7 +52,6 @@ namespace qClient {
 
 // ----------------------------------------------------------------------------
 QClient::QClient(hwc_context_t *ctx) : mHwcContext(ctx),
-        mMPDeathNotifier(new MPDeathNotifier(ctx)),
         mCamDeathNotifier(new CamDeathNotifier())
 {
     ALOGD_IF(QCLIENT_DEBUG, "QClient Constructor invoked");
@@ -64,10 +63,6 @@ QClient::~QClient()
 }
 
 static void securing(hwc_context_t *ctx, uint32_t startEnd) {
-    //The only way to make this class in this process subscribe to media
-    //player's death.
-    IMediaDeathNotifier::getMediaPlayerService();
-
     ctx->mDrawLock.lock();
     ctx->mSecuring = startEnd;
     //We're done securing
@@ -89,16 +84,6 @@ static void unsecuring(hwc_context_t *ctx, uint32_t startEnd) {
 
     if(ctx->proc)
         ctx->proc->invalidate(ctx->proc);
-}
-
-void QClient::MPDeathNotifier::died() {
-    mHwcContext->mDrawLock.lock();
-    ALOGD_IF(QCLIENT_DEBUG, "Media Player died");
-    mHwcContext->mSecuring = false;
-    mHwcContext->mSecureMode = false;
-    mHwcContext->mDrawLock.unlock();
-    if(mHwcContext->proc)
-        mHwcContext->proc->invalidate(mHwcContext->proc);
 }
 
 static android::status_t screenRefresh(hwc_context_t *ctx) {

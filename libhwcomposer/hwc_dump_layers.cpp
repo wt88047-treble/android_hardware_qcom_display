@@ -36,6 +36,7 @@
 #include <cutils/log.h>
 #include <sys/stat.h>
 #include <comptype.h>
+#undef QTI_BSP
 #ifdef QTI_BSP
 // Ignore W(float)conversion errors for external headers
 #pragma GCC diagnostic push

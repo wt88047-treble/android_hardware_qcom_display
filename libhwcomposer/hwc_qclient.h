@@ -35,7 +35,7 @@
 #include <cutils/log.h>
 #include <utils/RefBase.h>
 #include <binder/IServiceManager.h>
-#include <media/IMediaDeathNotifier.h>
+#include <binder/Parcel.h>
 #include <IQClient.h>
 
 struct hwc_context_t;
@@ -60,16 +60,7 @@ public:
     };
 
 private:
-    //Notifies of Media Player death
-    class MPDeathNotifier : public android::IMediaDeathNotifier {
-    public:
-        MPDeathNotifier(hwc_context_t* ctx) : mHwcContext(ctx){}
-        virtual void died();
-        hwc_context_t *mHwcContext;
-    };
-
     hwc_context_t *mHwcContext;
-    const android::sp<android::IMediaDeathNotifier> mMPDeathNotifier;
     const android::sp<QClient::CamDeathNotifier>  mCamDeathNotifier;
 };
 }; // namespace qClient
