@@ -20,13 +20,14 @@
 
 #include <fcntl.h>
 #include <stdint.h>
+#include <pwd.h>
 #include <sys/types.h>
 #include <binder/Parcel.h>
 #include <binder/IBinder.h>
 #include <binder/IInterface.h>
 #include <binder/IPCThreadState.h>
 #include <utils/Errors.h>
-#include <private/android_filesystem_config.h>
+#include <cutils/android_filesystem_config.h>
 #include <IQService.h>
 
 #define QSERVICE_DEBUG 0
@@ -79,15 +80,15 @@ status_t BnQService::onTransact(
     const int callerPid = ipc->getCallingPid();
     const int callerUid = ipc->getCallingUid();
 
-    const bool permission = (callerUid == AID_MEDIA ||
-            callerUid == AID_GRAPHICS ||
-            callerUid == AID_ROOT ||
-            callerUid == AID_CAMERASERVER ||
-            callerUid == AID_SYSTEM);
+    const bool permission = (callerUid == (const int)getpwnam("media")->pw_uid ||
+            callerUid == (const int)getpwnam("graphics")->pw_uid ||
+            callerUid == (const int)getpwnam("root")->pw_uid ||
+            callerUid == (const int)getpwnam("cameraserver")->pw_uid ||
+            callerUid == (const int)getpwnam("system")->pw_uid);
 
     if (code == CONNECT) {
         CHECK_INTERFACE(IQService, data, reply);
-        if(callerUid != AID_GRAPHICS) {
+        if(callerUid != (const int)getpwnam("graphics")->pw_uid) {
             ALOGE("display.qservice CONNECT access denied: pid=%d uid=%d",
                    callerPid, callerUid);
             return PERMISSION_DENIED;

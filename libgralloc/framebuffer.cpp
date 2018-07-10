@@ -17,7 +17,7 @@
 
 #include <sys/mman.h>
 #ifdef _ANDROID_
-#include <cutils/log.h>
+#include <log/log.h>
 #else
 #include <log/log.h>
 #endif

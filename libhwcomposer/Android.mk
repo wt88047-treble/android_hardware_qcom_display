@@ -6,6 +6,7 @@ LOCAL_MODULE                  := hwcomposer.$(TARGET_BOARD_PLATFORM)
 LOCAL_MODULE_RELATIVE_PATH    := hw
 LOCAL_VENDOR_MODULE           := true
 LOCAL_MODULE_TAGS             := optional
+LOCAL_HEADER_LIBRARIES	      := libui_headers
 LOCAL_C_INCLUDES              := $(common_includes) $(kernel_includes) \
                                  frameworks/native/libs/arect/include
 

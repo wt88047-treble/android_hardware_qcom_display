@@ -28,7 +28,7 @@ LOCAL_CFLAGS                  := $(common_flags) -DLOG_TAG=\"qdgralloc\"
 LOCAL_ADDITIONAL_DEPENDENCIES := $(common_deps) $(kernel_deps)
 LOCAL_SRC_FILES               := gpu.cpp gralloc.cpp framebuffer.cpp mapper.cpp
 LOCAL_COPY_HEADERS_TO         := $(common_header_export_path)
-LOCAL_COPY_HEADERS            := gralloc_priv.h gr.h
+LOCAL_EXPORT_C_INCLUDE_DIRS   := $(LOCAL_PATH)
 
 include $(BUILD_SHARED_LIBRARY)
 
@@ -44,6 +44,7 @@ LOCAL_CFLAGS                  := $(common_flags) -DLOG_TAG=\"qdmemalloc\"
 LOCAL_ADDITIONAL_DEPENDENCIES := $(common_deps) $(kernel_deps)
 LOCAL_SRC_FILES               := ionalloc.cpp alloc_controller.cpp
 LOCAL_COPY_HEADERS            := alloc_controller.h memalloc.h
+LOCAL_USE_VNDK		      := true
 
 ifeq ($(TARGET_USE_COMPAT_GRALLOC_ALIGN),true)
 LOCAL_CFLAGS += -DDISABLE_GET_PIXEL_ALIGNMENT
