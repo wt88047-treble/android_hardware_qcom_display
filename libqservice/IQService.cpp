@@ -80,15 +80,15 @@ status_t BnQService::onTransact(
     const int callerPid = ipc->getCallingPid();
     const int callerUid = ipc->getCallingUid();
 
-    const bool permission = (callerUid == (const int)getpwnam("media")->pw_uid ||
-            callerUid == (const int)getpwnam("graphics")->pw_uid ||
-            callerUid == (const int)getpwnam("root")->pw_uid ||
-            callerUid == (const int)getpwnam("cameraserver")->pw_uid ||
-            callerUid == (const int)getpwnam("system")->pw_uid);
+    const bool permission = (callerUid == AID_MEDIA ||
+            callerUid == AID_GRAPHICS ||
+            callerUid == AID_ROOT ||
+            callerUid == AID_CAMERASERVER ||
+            callerUid == AID_SYSTEM);
 
     if (code == CONNECT) {
         CHECK_INTERFACE(IQService, data, reply);
-        if(callerUid != (const int)getpwnam("graphics")->pw_uid) {
+        if(callerUid != AID_GRAPHICS) {
             ALOGE("display.qservice CONNECT access denied: pid=%d uid=%d",
                    callerPid, callerUid);
             return PERMISSION_DENIED;
